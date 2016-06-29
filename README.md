@@ -1,6 +1,6 @@
 # DWT_Upload_Download_Demo
 
-This sample demonstrates how to acquire images and upload them to a server that runs one of several different script lanuages.
+This sample demonstrates how to acquire images and upload them to a server that runs one of several different script languages.
 
 ####
 Dynamsoft Team
