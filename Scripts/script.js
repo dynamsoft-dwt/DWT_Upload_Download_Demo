@@ -16,6 +16,7 @@ var scriptLanguages = [
 ];   
 
 function languageSelected() {
+	document.getElementById("currentLANGUAGE").innerHTML = scriptLanguages[document.getElementById("ddlLanguages").value].desc;
 	if(document.getElementById("ddlLanguages").selectedIndex > 3){
 		document.getElementById("extra-fields-div-id").style.display='none';
 	}
@@ -51,6 +52,14 @@ function downloadPDFR() {
 
 function Dynamsoft_OnReady() {
 	blankField = document.getElementsByClassName('div-fields-item')[0].cloneNode(true);
+	Dynamsoft.Lib.addEventListener(document.getElementById('ddlLanguages'), 'mouseover', 
+		function(){document.getElementById(this.id + '-div').style.display = '';}
+	);
+	Dynamsoft.Lib.addEventListener(document.getElementById('ddlLanguages'), 'mouseout', 
+		function(){setTimeout(function(){
+			document.getElementById('ddlLanguages-div').style.display = 'none';}, 1000);
+		}
+	);
 	Dynamsoft.Lib.addEventListener(document.getElementById('quietTip'), 'mouseover', 
 		function(){document.getElementById(this.id + '-div').style.display = '';}
 	);
@@ -68,6 +77,7 @@ function Dynamsoft_OnReady() {
 		
 		for (var i = 0; i < scriptLanguages.length; i++)
 			document.getElementById("ddlLanguages").options.add(new Option(scriptLanguages[i].desc, i));
+		document.getElementById("ddlLanguages").options.selectedIndex = 1;
 		/*
 		* Make sure the PDF Rasterizer and OCR add-on are already installedsample
 		*/

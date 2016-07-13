@@ -41,12 +41,15 @@
             <div id="dwtcontrolContainer"></div>
         </div>
         <div class="ds-demo-left ds-demo-bright-grey ds-demo-inline-block ds-demo-padding-large ds-demo-center ds-demo-border-light-grey" style="width: 470px; height: 650px;">
-            <input type="button" value="Scan" onclick="AcquireImage();" class="ds-demo-btn ds-demo-width-92 ds-demo-margin-left-large" />
+			<input type="button" value="Scan" onclick="AcquireImage();" class="ds-demo-btn ds-demo-width-92 ds-demo-margin-left-large" />
             <input type="button" value="Open a local file" onclick="LoadImages();" class="ds-demo-btn ds-demo-width-168 ds-demo-margin-left-large" />
             <div>
                 <label class="ds-demo-lbl">Script Language :</label>
                 <select size="1" id="ddlLanguages" class="ds-demo-select ds-demo-width-168" onchange="languageSelected();"></select>
             </div>
+			<div id='ddlLanguages-div' style="display:none;z-index:100; position:absolute; width:400px;" class="ds-demo-block ds-demo-box-shadow ds-demo-radius-small ds-demo-margin-bottom ds-demo-teal">
+				Make Sure Your WebServer Supports <span id="currentLANGUAGE" style="color:#fe8e14; font-weight:bold; font-size:large;">CSharp</span>
+			</div>
 			<div id="extra-fields-div-id">
 				<label class="ds-demo-lbl">Extra Fields : </label>
 				<div type="text" class="ds-demo-btn ds-demo-width-168" 
@@ -72,8 +75,8 @@
 				<span id='directTip' class="ds-demo-cursor-help ds-demo-badge ds-demo-green ds-demo-teal">?</span><br />
 				<div id='quietTip-div' style='display:none; z-index:100; position:absolute; width:300px;' class="ds-demo-box-shadow ds-demo-light-grey ds-demo-radius-small">Upload without showing progress bar.</div>
 				<div id='directTip-div' style='display:none; z-index:100; position:absolute; width:300px;' class="ds-demo-box-shadow ds-demo-light-grey ds-demo-radius-small">Upload any file without loading it.</div>
-				<input type="button" value="Upload" onclick="UploadImage();" class="ds-demo-blue ds-demo-btn-large ds-demo-border-0 ds-demo-margin" />
-			</div>
+				<input type="button" value="Upload" onclick="UploadImage();" class="ds-demo-blue ds-demo-btn-large ds-demo-border-0 ds-demo-margin" />			
+			</div>			
 			<hr>
 			<div class="ds-demo-block ds-demo-container" style="text-align:left;">Uploaded Files</div>
 			<div style="border:solid 1px #ddd; background-color:#fff;min-height:80px; max-height:100px; overflow-y:scroll;">
@@ -108,7 +111,7 @@
                     <p>
                         Copyright &copy;
 						<script>document.write((new Date()).getFullYear());</script>
-                        <strong>Dynamsoft TST Team</strong>  &vert; 
+                        <strong>Dynamsoft Team</strong>  &vert; 
 						support [at] dynamsoft.com &vert; 1-604-605-5491 &vert; Vancouver, BC, Canada
                     </p>
                 </div>
