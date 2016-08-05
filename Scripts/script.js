@@ -12,7 +12,12 @@ var scriptLanguages = [
 	{ desc: "JSP", val: "jsp" },
 	{ desc: "VB.NET", val: "vbnet" },
 	{ desc: "ASP", val: "asp" },
-	{ desc: "ColdFusion", val: "cfm" }
+	{ desc: "ColdFusion", val: "cfm" },
+	{ desc: "PHP-MySQL", val: "phpMySQL" },
+	{ desc: "CS-MSSQL", val: "csMSSQL" },
+	{ desc: "VBNET-MSSQL", val: "vbnetMSSQL" },
+	{ desc: "ASP-MSSQL", val: "aspMSSQL" },
+	{ desc: "CS-Azure", val: "csAzure"}
 ];   
 
 function languageSelected() {
@@ -207,7 +212,7 @@ function _printUploadedFiles(info){
 	}
 }
 
-function upload_preparation() {
+function upload_preparation(_name) {
 	DWObject.IfShowCancelDialogWhenImageTransfer = !document.getElementById('quietScan').checked;   
 	strActionPage = CurrentPath + 'action/';
 	switch(document.getElementById("ddlLanguages").options.selectedIndex){
@@ -217,6 +222,11 @@ function upload_preparation() {
 		case 3:strActionPage += "vbnet.aspx"; break;
 		case 4:strActionPage += "asp.asp"; break;
 		case 5:strActionPage += "cfm.cfm"; break;
+		case 6:strActionPage += "php-mysql.php"; break;
+		case 7:strActionPage += "csharp-db.aspx"; break;
+		case 8:strActionPage += "vbnet-db.aspx"; break;
+		case 9:strActionPage += "asp-db.asp"; break;
+		case 10:preparetoUploadtoAzure(_name); break;
 		default:break;
 	}
 	DWObject.IfSSL = DynamLib.detect.ssl;
@@ -239,11 +249,14 @@ function upload_preparation() {
 function UploadImage_inner(){
 	if (DWObject.HowManyImagesInBuffer == 0)
 			return;                
-	upload_preparation();
+	
 	var Digital = new Date();
 	var uploadfilename = Digital.getMilliseconds(); // Uses milliseconds according to local time as the file name
-
+	upload_preparation(uploadfilename);
+	
 	// Upload the image(s) to the server asynchronously
+	if(document.getElementById("ddlLanguages").options.selectedIndex == 10 /*Azure*/) return;
+	
 	if (document.getElementsByName('ImageType')[0].checked) {
 		var uploadIndexes = [];
 		for(var i = DWObject.HowManyImagesInBuffer - 1;i > -1 ; i--) {
@@ -266,6 +279,7 @@ function UploadImage_inner(){
 		DWObject.HTTPUploadAllThroughPostAsPDF(strHTTPServer, strActionPage, uploadfilename + ".pdf", OnHttpUploadSuccess, OnHttpServerReturnedSomething);
 	}
 }
+
 function UploadImage() {
 	if (DWObject) {
 		var nCount = 0, nCountUpLoaded = 0, aryFilePaths = [];
@@ -302,3 +316,107 @@ function UploadImage() {
 		}
 	}
 }
+
+
+/*******************/
+/* Upload to Azure */
+
+var Base64Binary = {
+	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+	decode: function(input, arrayBuffer) {
+		//get last chars to see if are valid
+		var lkey1 = this._keyStr.indexOf(input.charAt(input.length-1));
+		var lkey2 = this._keyStr.indexOf(input.charAt(input.length-2));
+		var bytes = (input.length/4) * 3;
+		if (lkey1 == 64) bytes--; //padding chars, so skip
+		if (lkey2 == 64) bytes--; //padding chars, so skip		
+		var uarray;
+		var chr1, chr2, chr3;
+		var enc1, enc2, enc3, enc4;
+		var i = 0;
+		var j = 0;		
+		if (arrayBuffer)
+			uarray = new Uint8Array(arrayBuffer);
+		else
+			uarray = new Uint8Array(bytes);		
+		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");		
+		for (i=0; i<bytes; i+=3) {	
+			//get the 3 octects in 4 ascii chars
+			enc1 = this._keyStr.indexOf(input.charAt(j++));
+			enc2 = this._keyStr.indexOf(input.charAt(j++));
+			enc3 = this._keyStr.indexOf(input.charAt(j++));
+			enc4 = this._keyStr.indexOf(input.charAt(j++));	
+			chr1 = (enc1 << 2) | (enc2 >> 4);
+			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+			chr3 = ((enc3 & 3) << 6) | enc4;	
+			uarray[i] = chr1;			
+			if (enc3 != 64) uarray[i+1] = chr2;
+			if (enc4 != 64) uarray[i+2] = chr3;
+		}	
+		return uarray;	
+	}
+}
+
+function uploadImageInner_azure(blobSasUrl, fileDataAsArrayBuffer) {
+    var ajaxRequest = new XMLHttpRequest();
+    try {
+        ajaxRequest.open('PUT', blobSasUrl, true);
+		ajaxRequest.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+        ajaxRequest.send(fileDataAsArrayBuffer);
+		ajaxRequest.onreadystatechange = function() {
+			if (ajaxRequest.readyState == 4) {
+				console.log('Upload image to azure server successfully.');
+			}
+		}
+    }
+    catch (e) {
+        console.log("can't upload the image to server.\n" + e.toString());
+    }
+}
+
+function preparetoUploadtoAzure(__name) {
+	var uploadfilename = '';
+	//For JPEG, upload the current image
+	if (document.getElementsByName('ImageType')[0].checked){
+		DWObject.SelectedImagesCount = 1;
+		DWObject.SetSelectedImageIndex(0, DWObject.CurrentImageIndexInBuffer);
+		DWObject.GetSelectedImagesSize(EnumDWT_ImageType.IT_JPG);
+		uploadfilename = __name + '.jpg';
+	}
+	else { //For TIFF, PDF, upload all images
+		var count = DWObject.HowManyImagesInBuffer;
+		DWObject.SelectedImagesCount = count;
+		for(var i = 0; i < count; i++){
+			DWObject.SetSelectedImageIndex(i,i);
+		}	
+		if(document.getElementsByName('ImageType')[1].checked){
+			DWObject.GetSelectedImagesSize(EnumDWT_ImageType.IT_TIF);
+			uploadfilename = __name + '.tif';
+		}
+		else{
+			DWObject.GetSelectedImagesSize(EnumDWT_ImageType.IT_PDF);
+			uploadfilename = __name + '.pdf';
+		}
+	}
+
+	var strImg, aryImg, _uint8_STR, _bin_ARR, _blobImg;
+	strImg = DWObject.SaveSelectedImagesToBase64Binary();
+	// convert base64 to Uint8Array
+	var bytes = (strImg.length/4) * 3;
+	var _temp = new ArrayBuffer(bytes);
+	_uint8_STR = Base64Binary.decode(strImg, _temp);
+
+	// convert Uint8Array to blob
+    _blobImg = new Blob([_uint8_STR]); 
+	// upload to Azure server
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			uploadImageInner_azure(xhr.responseText, _blobImg);
+		}
+	}
+	var actionPageFullPath = CurrentPath + 'action/' + 'SAS.aspx?imageName=' + uploadfilename;
+	xhr.open('GET', actionPageFullPath, true);
+	xhr.send();
+}
+/*******************/

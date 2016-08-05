@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.sql.*,java.io.*"%><%
-	String strDBUser = "webtwain";
-	String strDBPassword = "webtwain";
+	String strDBUser = "test";
+	String strDBPassword = "Aa000000";
 	String strDriverName = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
 	String strConnString = "jdbc:microsoft:sqlserver://127.0.0.1:1433;databaseName=WebTwain;";
 	Connection conn=null;

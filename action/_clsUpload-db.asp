@@ -241,14 +241,14 @@ Class clsFile
 		Set connImage = Server.CreateObject("ADODB.Connection")
 		Set rsImage = Server.CreateObject("ADODB.RecordSet")
 	
-		strConnString = "provider = sqloledb; data source = 127.0.0.1; initial catalog = WebTwain; user id = webtwain; password = webtwain"
+		strConnString = "provider = sqloledb; data source = TOMPC-EUROCOM; initial catalog = dwtsample; user id = test; password = Aa000000"
 
     	connImage.Open strConnString
-    	rsImage.Open "select * from tblImage where iImageID = 1", connImage, adOpenKeyset, adLockPessimistic
+    	rsImage.Open "select * from uploadedimages where id = 1", connImage, adOpenKeyset, adLockPessimistic
         
         rsImage.AddNew
-        rsImage("strImageName") = m_strFileName
-        rsImage("imgImageData").AppendChunk m_Blob
+        rsImage("document_name") = m_strFileName
+        rsImage("document_data").AppendChunk m_Blob
         rsImage.Update
         
         rsImage.Close
