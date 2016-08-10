@@ -1,6 +1,6 @@
 Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady); // Register OnWebTwainReady event. This event fires as soon as Dynamic Web TWAIN is initialized and ready to be used
 
-var DWObject, blankField = "", extrFieldsCount = 0;
+var DWObject, blankField = "", extrFieldsCount = 0, upload_returnSth = true;
 var CurrentPathName = unescape(location.pathname);
 var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
 var	strHTTPServer = location.hostname;		
@@ -23,10 +23,17 @@ var scriptLanguages = [
 function languageSelected() {
 	document.getElementById("currentLANGUAGE").innerHTML = scriptLanguages[document.getElementById("ddlLanguages").value].desc;
 	if(document.getElementById("ddlLanguages").selectedIndex > 3){
-		document.getElementById("extra-fields-div-id").style.display='none';
+		upload_returnSth = false;
+		document.getElementById("extra-fields-div-id").style.display = 'none';
+		document.getElementById('div-extra-fields').style.display = 'none';
 	}
 	else {
-		document.getElementById("extra-fields-div-id").style.display='';
+		upload_returnSth = true;
+		document.getElementById("extra-fields-div-id").style.display = '';
+		if(document.getElementById('div-extra-fields').children.length > 1 ||
+		document.getElementById('div-extra-fields').children[0].children[0].children[0].value!=''){
+			document.getElementById('div-extra-fields').style.display = '';
+		}
 	}
 }
 
@@ -93,9 +100,9 @@ function Dynamsoft_OnReady() {
 			}
 			if (localPDFRVersion != Dynamsoft.PdfVersion) {
 				var ObjString = [];
-				ObjString.push('<div class="ds-demo-padding" id="pdfr-install-dlg">');
+				ObjString.push('<div class="p15" id="pdfr-install-dlg">');
 				ObjString.push('The <strong>PDF Rasterizer</strong> is not installed on this PC<br />Please click the button below to get it installed');
-				ObjString.push('<p class="ds-demo-center"><input type="button" value="Install PDF Rasterizer" onclick="downloadPDFR();" class="ds-demo-blue ds-demo-btn-large ds-demo-border-0 ds-demo-margin ds-font-size-18" /><hr></p>');
+				ObjString.push('<p class="tc mt15 mb15"><input type="button" value="Install PDF Rasterizer" onclick="downloadPDFR();" class="btn lgBtn bgBlue" /><hr></p>');
 				ObjString.push('<i><strong>The installation is a one-time process</strong> <br />It might take some time depending on your network.</i>');
 				ObjString.push('</div>');
 				Dynamsoft.WebTwainEnv.ShowDialog(400,310, ObjString.join(''));
@@ -181,6 +188,7 @@ function OnHttpUploadSuccess() {
         }
 
 function OnHttpServerReturnedSomething(errorCode, errorString, sHttpResponse) {
+	console.log(errorString);
 	var textFromServer = sHttpResponse;
 	_printUploadedFiles(textFromServer);
 }
@@ -200,12 +208,12 @@ function _printUploadedFiles(info){
 		var fileSize = info.substr(info.indexOf('UploadedFileSize') + 17);
 		url += CurrentPath + 'action/UploadedImages/' + encodeURI(fileName);
 		var newTR = document.createElement('tr');
-		_str = "<td class='ds-demo-center'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>"
-			+ "<td class='ds-demo-center'>" + fileSize + '</td>';
+		_str = "<td class='tc'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>"
+			+ "<td class='tc'>" + fileSize + '</td>';
 		if(info.indexOf("FieldsTrue:") != -1)
-			_str += "<td class='ds-demo-center'><a class='bluelink'" + '" href="' + url.substring(0,url.length-4) + '_1.txt' + '" target="_blank">Fields</td>';
+			_str += "<td class='tc'><a class='bluelink'" + '" href="' + url.substring(0,url.length-4) + '_1.txt' + '" target="_blank">Fields</td>';
 		else {
-			_str += "<td class='ds-demo-center'>No Fields</td>";
+			_str += "<td class='tc'>No Fields</td>";
 		}
 		newTR.innerHTML = _str;
 		document.getElementById('div-uploadedFile').appendChild(newTR);
@@ -241,8 +249,8 @@ function upload_preparation(_name) {
 		DWObject.ClearAllHTTPFormField();
 		for(var n=0;n<fields.length;n++){
 			var o = fields[n];
-			if(o.children[0].value !='')
-				DWObject.SetHTTPFormField(o.children[0].value, o.children[1].value);
+			if(o.children[0].children[0].value !='')
+				DWObject.SetHTTPFormField(o.children[0].children[0].value, o.children[1].children[0].value);
 		}
 	}
 }
@@ -263,14 +271,21 @@ function UploadImage_inner(){
 			uploadIndexes.push(i);
 		}
 		var uploadJPGsOneByOne = function(errorCode, errorString, sHttpResponse) {
-			_printUploadedFiles(sHttpResponse);
+			if(upload_returnSth)
+				_printUploadedFiles(sHttpResponse);
 			if(uploadIndexes.length > 0){
 				var _index = uploadIndexes.pop();
-				DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", OnHttpUploadSuccess, uploadJPGsOneByOne);
+				if(upload_returnSth)
+					DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", OnHttpUploadSuccess, uploadJPGsOneByOne);
+				else
+					DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", uploadJPGsOneByOne, OnHttpServerReturnedSomething);
 			}
 		}
 		var _index = uploadIndexes.pop();
-		DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", OnHttpUploadSuccess, uploadJPGsOneByOne);
+		if(upload_returnSth)
+			DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", OnHttpUploadSuccess, uploadJPGsOneByOne);
+		else
+			DWObject.HTTPUploadThroughPost(strHTTPServer, _index, strActionPage, uploadfilename + "-" + _index.toString() + ".jpg", uploadJPGsOneByOne, OnHttpServerReturnedSomething);
 	}
 	else if (document.getElementsByName('ImageType')[1].checked) {
 		DWObject.HTTPUploadAllThroughPostAsMultiPageTIFF(strHTTPServer, strActionPage, uploadfilename + ".tif", OnHttpUploadSuccess, OnHttpServerReturnedSomething);
