@@ -10,7 +10,7 @@ Dynamsoft Team
 * Server software: IIS, Apache TomCat, etc.
 
 #### See it in Action
-You can check out how it works on this [demo page](http://www.dynamsoft.com/Samples/DWT/DWT_Upload_Download_Demo/DWT_Upload_Download_Demo.html).
+You can check out how it works on this [demo page](http://www.dynamsoft.com/Samples/DWT/Scan-Documents-and-Upload-Them/DWT_Upload_Download_Demo.html).
 
 #### Complete Sample
 In order to test the sample on your own, you need to download the complete code from [here](http://www.dynamsoft.com/Samples/DWT/DWT_Upload_Download_Demo.zip).
