@@ -90,7 +90,7 @@ a.graylink:hover { color: #61c2ec; }
 .chxGroup input[type='checkbox'] { width: 18px; height: 18px; vertical-align: text-bottom; }
 #quietTip, #directTip { display: inline-block; position: relative; left: 2px; bottom: -4px; width: 20px; height: 20px; background: url(../../Scan-Documents-and-Do-Server-side-OCR-Pro/Sample/OCRServer/Style/Images/icn-info-13x14.png) no-repeat center center; cursor: pointer; }
 #main .ct-rt hr { margin: 15px 0 20px 0; border: none; border-top: solid 1px #ddd; }
-#resultWrap { padding: 3px 0 0 8px; margin-top: 3px; margin-bottom: 20px; border: solid 1px #ddd; background-color: #fff; min-height: 100px; max-height: 120px; overflow-y: scroll; }
+#resultWrap { padding: 3px 0 0 8px; margin-top: 3px; margin-bottom: 20px; border: solid 1px #ddd; background-color: #fff; min-height: 80px; max-height: 100px; overflow-y: scroll; }
 #footerTop .item.contact { width: 31%; }
 #footerTop .item.features { width: 37%; }
 #footerTop .item.license { width: 32%; }
