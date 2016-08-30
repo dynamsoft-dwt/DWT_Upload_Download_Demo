@@ -22,7 +22,6 @@ var scriptLanguages = [
 ];
 
 function languageSelected() {
-    document.getElementById("currentLANGUAGE").innerHTML = scriptLanguages[document.getElementById("ddlLanguages").value].desc;
     if (document.getElementById("ddlLanguages").selectedIndex > 7)
         upload_returnSth = false;
     else
@@ -68,28 +67,6 @@ function downloadPDFR() {
 
 function Dynamsoft_OnReady() {
     blankField = document.getElementsByClassName('div-fields-item')[0].cloneNode(true);
-    Dynamsoft.Lib.addEventListener(document.getElementById('ddlLanguages'), 'mouseover',
-        function () { document.getElementById(this.id + '-div').style.display = ''; }
-    );
-    Dynamsoft.Lib.addEventListener(document.getElementById('ddlLanguages'), 'mouseout',
-        function () {
-            setTimeout(function () {
-                document.getElementById('ddlLanguages-div').style.display = 'none';
-            }, 1000);
-        }
-    );
-    Dynamsoft.Lib.addEventListener(document.getElementById('quietTip'), 'mouseover',
-        function () { document.getElementById(this.id + '-div').style.display = ''; }
-    );
-    Dynamsoft.Lib.addEventListener(document.getElementById('directTip'), 'mouseover',
-        function () { document.getElementById(this.id + '-div').style.display = ''; }
-    );
-    Dynamsoft.Lib.addEventListener(document.getElementById('quietTip'), 'mouseout',
-        function () { document.getElementById(this.id + '-div').style.display = 'none'; }
-    );
-    Dynamsoft.Lib.addEventListener(document.getElementById('directTip'), 'mouseout',
-        function () { document.getElementById(this.id + '-div').style.display = 'none'; }
-    );
     DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
     if (DWObject) {
 
@@ -277,8 +254,8 @@ function upload_preparation(_name) {
         DWObject.ClearAllHTTPFormField();
         for (var n = 0; n < fields.length; n++) {
             var o = fields[n];
-            if (o.children[0].children[0].value != '')
-                DWObject.SetHTTPFormField(o.children[0].children[0].value, o.children[1].children[0].value);
+            if (o.children[0].value != '')
+                DWObject.SetHTTPFormField(o.children[0].value, o.children[1].value);
         }
     }
 }

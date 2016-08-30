@@ -33,79 +33,58 @@
         </div>
         <div class="ct-rt">
             <div class="content clearfix">
-                <div class="item">
-                    <div class="left">
-                        <input type="button" value="Scan" onclick="AcquireImage();" class="btn" />
-                    </div>
-                    <div class="right">
-                        <input type="button" value="Open a local file" onclick="LoadImages();" class="btn" />
-                    </div>
+                <div class="section">
+					<input type="button" value="Scan" onclick="AcquireImage();" class="btn mr20" />
+					<input type="button" value="Open a local file" onclick="LoadImages();" class="btn" />
+					<div class="item mt10 radioGroup" >
+					Upload file format:
+						<label for="jpeg" style="margin-right: 12px;">
+							<input type="radio" value="jpg" name="ImageType" id="jpeg" checked="checked" />
+							JPG</label>
+						<label for="tiff" style="margin-right: 12px;">
+							<input type="radio" value="tif" name="ImageType" id="tiff"/>
+							TIF</label>
+						<label for="pdf">
+							<input type="radio" value="pdf" name="ImageType" id="pdf"/>
+							PDF</label>
+					</div>
+					<div class="mt10" style="display:none;">
+						<div>
+							<label>Script Language :</label>
+							<select size="1" id="ddlLanguages" class="w60p fr" onchange="languageSelected();"></select>
+						</div>
+					</div>
+				</div>
+                <div id="extra-fields-div-id" class="section">
+                    <div>
+						<label>HTTP Form Fields: </label>
+						<div type="text" class="addBtn w60p fr" onclick="addAField()">&plus;</div>
+					</div>
+					<br />					
+					<div id="div-extra-fields" class="" style="display:none; max-height:70px;">
+						<div class="div-fields-item">
+							<input type="text" class="w47p mb15" placeholder="Field Name" />
+							:
+							<input type="text" class="w47p mb15" placeholder="Field Value" />
+						</div>
+					</div>
+				</div>
+				<div class="section" style="width:100%; float:left;">
+					<div style="width:32%;float:left; border-right: solid 1px #e7e7e7;">
+						<input type="button" value="Upload" onclick="UploadImage();" class="mt10 mb10 btn bgBlue" style="width:100px;"/>
+					</div>
+					<div style="width:67%;float:left; padding-left:5%;">
+						<label><input type="checkbox" value="quiet" id="quietScan" />Hide progress bar on uploading</label><br />
+						<label><input type="checkbox" value="directly" id="uploadDirectly" />Direct upload from file system</label>
+					</div>
                 </div>
-                <div class="item pr">
-                    <div class="left">
-                        <label>Script Language :</label>
-                    </div>
-                    <div class="right">
-                        <select size="1" id="ddlLanguages" class="w100p" onchange="languageSelected();">
-                        </select>
-                    </div>
-                    <div id='ddlLanguages-div' style="display:none;"> Make Sure Your WebServer Supports <span id="currentLANGUAGE">CSharp</span> </div>
-                </div>
-                <div id="extra-fields-div-id" class="item">
-                    <div class="left">
-                        <label>Extra Fields: </label>
-                    </div>
-                    <div class="right">
-                        <div type="text" class="addBtn" onclick="addAField()">&plus;</div>
-                    </div>
-                </div>
-                <div id="div-extra-fields" class="item" style="display:none; max-height:70px;">
-                    <div class="div-fields-item">
-                        <div class="left">
-                            <input type="text" placeholder="Field Name" />
-                            :</div>
-                        <div class="right">
-                            <input type="text" placeholder="Field Value" />
-                        </div>
-                    </div>
-                </div>
-                <div class="item mt10 radioGroup">
-                    <label for="jpeg">
-                        <input type="radio" value="jpg" name="ImageType" id="jpeg" checked="checked" />
-                        JPEG</label>
-                    <label for="tiff">
-                        <input type="radio" value="tif" name="ImageType" id="tiff"/>
-                        TIFF</label>
-                    <label for="pdf">
-                        <input type="radio" value="pdf" name="ImageType" id="pdf"/>
-                        PDF</label>
-                </div>
-                <div class="item mt15 chxGroup pr">
-                    <div class="left">
-                        <label>
-                            <input type="checkbox" value="quiet" id="quietScan" />
-                            Quiet</label>
-                        <span id='quietTip'></span> </div>
-                    <div class="right">
-                        <label>
-                            <input type="checkbox" value="directly" id="uploadDirectly" />
-                            Direct</label>
-                        <span id='directTip' ></span> </div>
-                    <div id='quietTip-div' style='display:none;' >Upload without showing progress bar.</div>
-                    <div id='directTip-div' style='display:none;' >Upload any file without loading it.</div>
-                </div>
-                <div class="item">
-                    <div class="left">&nbsp;</div>
-                    <div class="right">
-                        <input type="button" value="Upload" onclick="UploadImage();" class="mt20 btn bgBlue" style="width:130px;"/>
-                    </div>
-                </div>
-                <hr>
-                <div>Uploaded Files</div>
-                <div id="resultWrap">
-                    <table id='div-uploadedFile'>
-                    </table>
-                </div>
+				<div class="section" style="width:100%; float:left;">
+					<div>Uploaded Files</div>
+					<div id="resultWrap">
+						<table id='div-uploadedFile'>
+						</table>
+					</div>
+				</div>
             </div>
         </div>
     </div>

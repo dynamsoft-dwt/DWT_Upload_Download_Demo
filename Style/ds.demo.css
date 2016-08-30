@@ -29,10 +29,12 @@ a.graylink:hover { color: #61c2ec; }
 .mt25 { margin-top: 25px; }
 .mr20 { margin-right: 20px; }
 .mr4p { margin-right: 4%; }
+.mb10 { margin-bottom: 10px; }
 .mb15 { margin-bottom: 15px; }
 .ml10 { margin-left: 10px; }
 .p15 { padding: 15px; }
 .w100p { width: 100%; }
+.w60p { width: 60%; }
 .w47p { width: 47%; }
 .fc4 { color: #444; }
 .fcBlue { color: #50a8e1; }
@@ -73,24 +75,15 @@ a.graylink:hover { color: #61c2ec; }
 #main .ct-rt .content { padding-top: 15px; width: 474px; height: 598px; }
 #main .ct-rt select, #main .ct-rt input[type='text'] { padding: 0 5px; height: 28px; border: solid 1px #bbb; outline: none; }
 /*================== content-right-detail ======================*/
-#main .ct-rt .content { padding: 35px 60px; }
-#main .ct-rt .content .item:after { content: ''; display: table; clear: both; }
-#main .ct-rt .content .item .left { width: 35%; float: left; }
-#main .ct-rt .content .item .right { width: 65%; float: left; margin-bottom: 15px; }
-#main .ct-rt .content .item:first-child .right { margin-bottom: 25px; }
-#ddlLanguages-div, #quietTip-div, #directTip-div { position: absolute; z-index: 100; bottom: -16px; padding: 8px; height: auto; width: 100%; background: #444; opacity: .8; font-size: 12px; line-height: 16px; color: #fff; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; }
+#main .ct-rt .content .section { padding: 20px 60px; border-bottom: solid 1px #e7e7e7; }
+#main .ct-rt .content .section:last-child { border-bottom: none; }
+#main .ct-rt select:disabled { color: #aaa; border-color: #aaa; }
+#status_text { padding: 5px 0 0 8px; margin-bottom: 20px; height: 90px; overflow-y: scroll; width: 100%; text-align: left; background: #fff; border: solid 1px #ccc; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; -o-border-radius: 3px; }
+
 #currentLANGUAGE { color: #fe8e14; font-weight: bold; }
 #extra-fields-div-id .addBtn { border: 1px dashed #999; color: #999; font-size: 36px; text-align: center; cursor: pointer; }
-#main #div-extra-fields .left { width: 52%; margin-bottom: 10px; }
-#main #div-extra-fields .right { width: 48%; margin-bottom: 10px; }
-#main #div-extra-fields .left input { width: 88%; }
-#main #div-extra-fields .right input { width: 100%; }
 .radioGroup label { margin-right: 58px; }
 .radioGroup input[type='radio'] { width: 18px; height: 18px; vertical-align: text-bottom; }
 .chxGroup input[type='checkbox'] { width: 18px; height: 18px; vertical-align: text-bottom; }
-#quietTip, #directTip { display: inline-block; position: relative; left: 2px; bottom: -4px; width: 20px; height: 20px; background: url(../../Scan-Documents-and-Do-Server-side-OCR-Pro/Sample/OCRServer/Style/Images/icn-info-13x14.png) no-repeat center center; cursor: pointer; }
-#main .ct-rt hr { margin: 15px 0 20px 0; border: none; border-top: solid 1px #ddd; }
 #resultWrap { padding: 3px 0 0 8px; margin-top: 3px; margin-bottom: 20px; border: solid 1px #ddd; background-color: #fff; min-height: 80px; max-height: 100px; overflow-y: scroll; }
-#footerTop .item.contact { width: 31%; }
-#footerTop .item.features { width: 37%; }
-#footerTop .item.license { width: 32%; }
+
