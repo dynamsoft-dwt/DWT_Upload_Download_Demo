@@ -179,10 +179,10 @@ function _printUploadedFiles(info) {
     //console.log(info);
     if (info.indexOf('DWTUploadFileName') != -1) {
         var url, _strPort;
-        DWObject.IfSSL = DynamLib.detect.ssl;
+        DWObject.IfSSL = Dynamsoft.Lib.detect.ssl;
         _strPort = location.port == "" ? 80 : location.port
         url = 'http://' + location.hostname + ':' + location.port
-        if (DynamLib.detect.ssl == true) {
+        if (Dynamsoft.Lib.detect.ssl == true) {
             _strPort = location.port == "" ? 443 : location.port;
             url = 'https://' + location.hostname + ':' + location.port
         }
@@ -242,9 +242,9 @@ function upload_preparation(_name) {
         case 11: preparetoUploadtoAzure(_name); break;
         default: break;
     }
-    DWObject.IfSSL = DynamLib.detect.ssl;
+    DWObject.IfSSL = Dynamsoft.Lib.detect.ssl;
     var _strPort = location.port == "" ? 80 : location.port;
-    if (DynamLib.detect.ssl == true)
+    if (Dynamsoft.Lib.detect.ssl == true)
         _strPort = location.port == "" ? 443 : location.port;
     DWObject.HTTPPort = _strPort;
     if ([0, 2, 4, 6].indexOf(document.getElementById("ddlLanguages").selectedIndex) != -1) {
