@@ -148,6 +148,7 @@ function LoadImages() {
                                 loadFileOneByOne();
                         },
                         function (errorCode, errorString) {
+							Dynamsoft.Lib.detect.hideMask();
                             alert('Load Image:' + aryFilePaths[i]._filePath + errorString);
                         }
                     );
