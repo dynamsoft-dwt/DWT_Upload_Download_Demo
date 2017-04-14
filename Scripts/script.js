@@ -56,7 +56,7 @@ function addAField() {
 function downloadPDFR() {
     Dynamsoft__OnclickCloseInstallEx();
     DWObject.Addon.PDF.Download(
-        CurrentPath + '/Resources/addon/Pdf.zip',
+        Dynamsoft.WebTwainEnv.ResourcesPath + '/addon/Pdf.zip',
         function () {/*console.log('PDF dll is installed');*/
         },
         function (errorCode, errorString) {
@@ -69,7 +69,8 @@ function Dynamsoft_OnReady() {
     blankField = document.getElementsByClassName('div-fields-item')[0].cloneNode(true);
     DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
     if (DWObject) {
-
+		DWObject.Width = 504;
+		DWObject.Height = 598;
         for (var i = 0; i < scriptLanguages.length; i++)
             document.getElementById("ddlLanguages").options.add(new Option(scriptLanguages[i].desc, i));
         document.getElementById("ddlLanguages").options.selectedIndex = 2;
