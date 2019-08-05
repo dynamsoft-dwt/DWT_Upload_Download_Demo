@@ -26,9 +26,7 @@
 	String _fields = "";
 	String fileName = "";
 	long sizeInBytes = 0;
-	String path = application.getRealPath(request.getRequestURI());
-	String dir = new java.io.File(path).getParent();
-	String _temp_Name = dir + "/UploadedImages/_temp_fields_tochange_later";
+	String _temp_Name = application.getRealPath("/action/Dynamsoft_Upload/_temp_fields_tochange_later");
 	File _fieldsTXT = new File(_temp_Name);
 	if(!_fieldsTXT.exists())
 	{
@@ -54,7 +52,7 @@
 		} 
 		// Process a file upload
 		else {
-			if(_fields == "FieldsTrue:"){
+			if(_fields.equals("FieldsTrue:")){
 				objWriter.flush();
 				objWriter.close();	
 			}
@@ -69,7 +67,9 @@
 			boolean isInMemory = item.isInMemory();
 			sizeInBytes = item.getSize();
 			if(fileName!=null && sizeInBytes!=0){
-				File uploadedFile = new File(dir + "/UploadedImages/" + fileName);
+				
+				String _temp_Name2 = application.getRealPath("/action/Dynamsoft_Upload/" + fileName);
+				File uploadedFile = new File(_temp_Name2);
 				if(!uploadedFile.exists())
 				{
 					boolean result = uploadedFile.createNewFile();
@@ -83,7 +83,8 @@
 				}
 				if(_fieldsTXT.exists())
 				{
-					_fieldsTXT.renameTo(new File(dir + "/UploadedImages/" + fileName.substring(0,fileName.length()-4) + "_1.txt"));
+					String _temp_Name3 = application.getRealPath("/action/Dynamsoft_Upload/" + fileName.substring(0,fileName.length()-4) + "_1.txt");
+					_fieldsTXT.renameTo(new File(_temp_Name3));
 				}
 			}
 		}
@@ -91,4 +92,5 @@
 	Integer _fileSize = (int)(sizeInBytes/1024);
 	String _strSize = Integer.toString(_fileSize) + "KB";
 	out.println(_fields +"DWTUploadFileName:" + fileName + "UploadedFileSize:" + _strSize);
+
 %>

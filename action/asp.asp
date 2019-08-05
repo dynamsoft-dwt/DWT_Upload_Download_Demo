@@ -3,7 +3,7 @@
 	If (Request.TotalBytes > 1) Then
 		Dim objUpload, lngLoop
 		dim directory
-		directory=server.MapPath(".") & "\UploadedImages\"
+		directory=server.MapPath(".") & "\Dynamsoft_Upload\"
 		Set objUpload = New clsUpload
 		For lngLoop = 0 to objUpload.Files.Count - 1
 			objUpload.Files.Item(lngLoop).Save directory
